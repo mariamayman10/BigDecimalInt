@@ -13,7 +13,7 @@ public:
     BigDecimalInt(string decStr, int decSz, int decSign);
     //BigDecimalInt operator+ (BigDecimalInt anotherDec);
     //BigDecimalInt operator- (BigDecimalInt anotherDec);
-    //bool operator< (BigDecimalInt anotherDec);
+    bool operator< (BigDecimalInt anotherDec);
     bool operator> (BigDecimalInt anotherDec);
     bool operator== (BigDecimalInt anotherDec);
     BigDecimalInt& operator= (BigDecimalInt anotherDec);
@@ -30,6 +30,49 @@ BigDecimalInt::BigDecimalInt(string decStr, int decSz, int decSign){
     number = decStr;
     size = decSz;
     sign = decSign;
+}
+bool BigDecimalInt:: operator< (BigDecimalInt anotherDec){
+    if(number[0] == '-' || anotherDec.number[0] == '-'){
+        if(number[0] == '-' && anotherDec.number[0] != '-'){
+            return true;
+        }
+        else if(number[0] != '-' && anotherDec.number[0] == '-'){
+            return false;
+        }
+        else{
+            if(number.length() - 1 > anotherDec.number.length() - 1){
+                return true;
+            }
+            else if(number.length() - 1 < anotherDec.number.length() - 1){
+                return false;
+            }
+            else{
+                for (int i = 0; i < size; ++i) {
+                    if(number[i] > anotherDec.number[i]){
+                        return true;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+    else{
+        if(size > anotherDec.size){
+            return false;
+        }
+        else if(size < anotherDec.size){
+            return true;
+        }
+        else{
+            for (int i = 0; i < size; ++i) {
+                if(number[i] > anotherDec.number[i]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 }
 bool BigDecimalInt:: operator> (BigDecimalInt anotherDec){
     if(number[0] == '-' || anotherDec.number[0] == '-'){
