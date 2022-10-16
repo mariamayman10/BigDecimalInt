@@ -2,7 +2,21 @@
 using namespace std;
 #define ll long long
 string str1, str2;
-int s1, s2, sign1, sign2;
+int sign1, sign2;
+bool check_if_all_zeroes(string string1){
+    int counter = 0;
+    for (int i = 0; i < string1.length(); ++i) {
+        if(string1[i] == '0'){
+            counter++;
+        }
+    }
+    if(counter == string1.length()){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 class BigDecimalInt{
 private:
     string number;
@@ -11,8 +25,8 @@ private:
 public:
     BigDecimalInt();
     BigDecimalInt(int decInt);
-    BigDecimalInt(string decStr, unsigned ll decSz, int decSign);
-    //BigDecimalInt operator+ (BigDecimalInt anotherDec);
+    BigDecimalInt(string decStr);
+    BigDecimalInt operator+ (BigDecimalInt anotherDec);
     BigDecimalInt operator- (BigDecimalInt anotherDec);
     bool operator< (BigDecimalInt anotherDec);
     bool operator> (BigDecimalInt anotherDec);
@@ -37,10 +51,26 @@ BigDecimalInt::BigDecimalInt(int decInt ){
         sign = 1;
     }
 }
-BigDecimalInt::BigDecimalInt(string decStr, unsigned ll decSz,int decSign ){
-    number = decStr;
-    size = decSz;
-    sign = decSign;
+BigDecimalInt::BigDecimalInt(string decStr){
+    int sum = 0;
+    for (int i = 0; i < decStr.size(); i++) {
+        if ((decStr[i] >= 48 && decStr[i] <= 57) || (decStr[i] == '+' && i == 0) || (decStr[i] == '-' && i == 0)) {
+            sum += 1;
+        }
+    }
+    if (sum == decStr.size()) {
+        number = decStr;
+        size = decStr.size();
+        if(decStr[0] == '+'){
+            sign = 1;
+        }
+        else{
+            sign = 0;
+        }
+    }
+    else {
+        cout << "Invalid input, try again\n";
+    }
 }
 BigDecimalInt BigDecimalInt:: operator- (BigDecimalInt anotherDec) {
     BigDecimalInt result;
@@ -56,7 +86,6 @@ BigDecimalInt BigDecimalInt:: operator- (BigDecimalInt anotherDec) {
     if (sign2 == 0) {
         StrNum2[0] = '0';
     }
-    cout <<  sign1 << ' ' << sign2 << '\n';
     if (StrNum1.size() != StrNum2.size()) {
         if (StrNum1.size() > StrNum2.size()) {
             add_zeroes = StrNum1.size() - StrNum2.size();
@@ -91,14 +120,19 @@ BigDecimalInt BigDecimalInt:: operator- (BigDecimalInt anotherDec) {
                 str_result = to_string(intresult);
                 result1 = str_result + result1;
             }
-            for (int i = 0; i < result1.size(); ++i) {
-                if(result1[i] == '0'){
-                    result1.erase(i, 1);
-                    i--;
+            if(!check_if_all_zeroes(result1)){
+                for (int i = 0; i < result1.size(); ++i) {
+                    if(result1[i] == '0'){
+                        result1.erase(i, 1);
+                        i--;
+                    }
+                    else{
+                        break;
+                    }
                 }
-                else{
-                    break;
-                }
+            }
+            else{
+                result1 = "0";
             }
             result.number = result1;
             result.sign = 0;
@@ -123,14 +157,19 @@ BigDecimalInt BigDecimalInt:: operator- (BigDecimalInt anotherDec) {
                 str_result = to_string(intresult);
                 result1 = str_result + result1;
             }
-            for (int i = 0; i < result1.size(); ++i) {
-                if(result1[i] == '0'){
-                    result1.erase(i, 1);
-                    i--;
+            if(!check_if_all_zeroes(result1)){
+                for (int i = 0; i < result1.size(); ++i) {
+                    if(result1[i] == '0'){
+                        result1.erase(i, 1);
+                        i--;
+                    }
+                    else{
+                        break;
+                    }
                 }
-                else{
-                    break;
-                }
+            }
+            else{
+                result1 = "0";
             }
             result.number = result1;
             result.sign = 1;
@@ -158,14 +197,19 @@ BigDecimalInt BigDecimalInt:: operator- (BigDecimalInt anotherDec) {
                 str_result = to_string(intresult);
                 result1 = str_result + result1;
             }
-            for (int i = 0; i < result1.size(); ++i) {
-                if(result1[i] == '0'){
-                    result1.erase(i, 1);
-                    i--;
+            if(!check_if_all_zeroes(result1)){
+                for (int i = 0; i < result1.size(); ++i) {
+                    if(result1[i] == '0'){
+                        result1.erase(i, 1);
+                        i--;
+                    }
+                    else{
+                        break;
+                    }
                 }
-                else{
-                    break;
-                }
+            }
+            else{
+                result1 = "0";
             }
             result.number = result1;
             result.sign = 1;
@@ -191,14 +235,19 @@ BigDecimalInt BigDecimalInt:: operator- (BigDecimalInt anotherDec) {
                 result1 = str_result + result1;
 
             }
-            for (int i = 0; i < result1.size(); ++i) {
-                if(result1[i] == '0'){
-                    result1.erase(i, 1);
-                    i--;
+            if(!check_if_all_zeroes(result1)){
+                for (int i = 0; i < result1.size(); ++i) {
+                    if(result1[i] == '0'){
+                        result1.erase(i, 1);
+                        i--;
+                    }
+                    else{
+                        break;
+                    }
                 }
-                else{
-                    break;
-                }
+            }
+            else{
+                result1 = "0";
             }
             result.number = result1;
             result.sign = 0;
@@ -222,14 +271,86 @@ BigDecimalInt BigDecimalInt:: operator- (BigDecimalInt anotherDec) {
             }
             str_result = to_string(intresult);
             result1 = str_result + result1;
-            result.number = result1;
         }
+        if(!check_if_all_zeroes(result1)){
+            for (int i = 0; i < result1.size(); ++i) {
+                if(result1[i] == '0'){
+                    result1.erase(i, 1);
+                    i--;
+                }
+                else{
+                    break;
+                }
+            }
+        }
+        else{
+            result1 = "0";
+        }
+        result.number = result1;
         if (sign1 == 0) {
             result.sign = 0;
         }
         return result;
     }
     return anotherDec;
+}
+BigDecimalInt BigDecimalInt::operator+(BigDecimalInt anotherDec) {
+    BigDecimalInt result;
+    int carry = 0;
+    if (number.size() != anotherDec.number.size()) {
+        if (number.size() > anotherDec.number.size()) {
+            for (int k = 0; k < (number.size() - anotherDec.number.size()); k++) {
+                anotherDec.number.insert(number.begin(), '0');
+            }
+        } else {
+            for (int k = 0; k < (number.size() - anotherDec.number.size()); k++) {
+                number.insert(number.begin(), '0');
+            }
+        }
+    }
+    std::reverse(number.begin(), number.end());
+    std::reverse(anotherDec.number.begin(), anotherDec.number.end());
+    vector<int>vec;
+    for(int i = 0; i < number.size(); i++) {
+        int n1, n2;
+        string Str1, Str2;
+        Str1 = number[i];
+        Str2 = anotherDec.number[i];
+        n2 = stoi(Str1);
+        n1 = stoi(Str2);
+        if(((n1 + n2 + carry)) >= 10){
+            int I1, I2;
+            I1 = (n1 + n2 + carry) % 10;
+            I2 = (n1 + n2 + carry) / 10;
+            vec.push_back(I1);
+            carry =I2;
+
+        }else{
+
+            vec.push_back(n1 + n2 + carry);
+        }
+    }vec.push_back(carry);
+    string result1;
+    reverse(vec.begin(), vec.end());
+    for(int j : vec){
+        result1 += to_string(j);
+    }
+    if(!check_if_all_zeroes(result1)){
+        for (int i = 0; i < result1.size(); ++i) {
+            if(result1[i] == '0'){
+                result1.erase(i, 1);
+                i--;
+            }
+            else{
+                break;
+            }
+        }
+    }
+    else{
+        result1 = "0";
+    }
+    result.number = result1;
+    return result;
 }
 bool BigDecimalInt::operator<(BigDecimalInt anotherDec) {
     if (number[0] == '-' || anotherDec.number[0] == '-') {
@@ -265,7 +386,6 @@ bool BigDecimalInt::operator<(BigDecimalInt anotherDec) {
         }
         return true;
     }
-
 }
 bool BigDecimalInt::operator>(BigDecimalInt anotherDec) {
     if (number[0] == '-' || anotherDec.number[0] == '-') {
@@ -342,22 +462,10 @@ ostream &operator<<(ostream &out, const BigDecimalInt &b) {
 }
 int main() {
     cin >> str1 >> str2;
-    s1 = str1.length();
-    s2 = str2.length();
-    if (str1[0] == '-') {
-        sign1= 0;
-    } else {
-        sign1= 1;
-    }
-    if (str2[0] == '-') {
-        sign2= 0;
-    } else {
-        sign2= 1;
-    }
 
-    BigDecimalInt n1 = BigDecimalInt(str1, s1, sign1);
-    BigDecimalInt n2 = BigDecimalInt(str2, s2, sign2);
-    cout << n1-n2;
+    BigDecimalInt n1 = BigDecimalInt(str1);
+    BigDecimalInt n2 = BigDecimalInt(str2);
+    cout << n1 + n2;
 
 }
 
