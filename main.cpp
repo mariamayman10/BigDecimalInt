@@ -47,31 +47,43 @@ BigDecimalInt::BigDecimalInt(int decInt ){
     if(number[0] == '-'){
         sign = 0;
     }
-    else{
+    else
+    {
         sign = 1;
     }
 }
-BigDecimalInt::BigDecimalInt(string decStr){
-    int sum = 0;
-    for (int i = 0; i < decStr.size(); i++) {
-        if ((decStr[i] >= 48 && decStr[i] <= 57) || (decStr[i] == '+' && i == 0) || (decStr[i] == '-' && i == 0)) {
-            sum += 1;
+BigDecimalInt:: BigDecimalInt(string decStr){
+        int sum = 0;
+        for (int i = 0; i < decStr.size(); i++) {
+            if ((decStr[i] >= 48 && decStr[i] <= 57) || (decStr[i] == '+' && i == 0) || (decStr[i] == '-' && i == 0)) {
+                sum += 1;
+            }
         }
-    }
-    if (sum == decStr.size()) {
-        number = decStr;
-        size = decStr.size();
+        if (sum == decStr.size()) {
+            number = decStr;
+            size = decStr.size();
+            if(decStr[0] == '-'){
+                sign = 0;
+            }
+            else{
+                sign = 1;
+            }
+        }
+        else {
+            number = "0";
+        }
         if(decStr[0] == '+'){
-            sign = 1;
+            decStr.erase(decStr.begin());
+            number = decStr;
         }
-        else{
-            sign = 0;
+        if(decStr[0] == '-'){
+            AddSub += 1;
+            decStr.erase(decStr.begin());
+            number = decStr;
         }
+
     }
-    else {
-        cout << "Invalid input, try again\n";
-    }
-}
+
 BigDecimalInt BigDecimalInt:: operator- (BigDecimalInt anotherDec) {
     BigDecimalInt result;
     sign1 = this->Sign();
@@ -295,63 +307,111 @@ BigDecimalInt BigDecimalInt:: operator- (BigDecimalInt anotherDec) {
     return anotherDec;
 }
 BigDecimalInt BigDecimalInt::operator+(BigDecimalInt anotherDec) {
-    BigDecimalInt result;
-    int carry = 0;
-    if (number.size() != anotherDec.number.size()) {
-        if (number.size() > anotherDec.number.size()) {
-            for (int k = 0; k < (number.size() - anotherDec.number.size()); k++) {
-                anotherDec.number.insert(number.begin(), '0');
-            }
-        } else {
-            for (int k = 0; k < (number.size() - anotherDec.number.size()); k++) {
-                number.insert(number.begin(), '0');
-            }
-        }
-    }
+    BigDecimalInt finalResultOfAdd;
+    int carry = 0, test = 0;
+    vector<int>vec;
     std::reverse(number.begin(), number.end());
     std::reverse(anotherDec.number.begin(), anotherDec.number.end());
-    vector<int>vec;
-    for(int i = 0; i < number.size(); i++) {
-        int n1, n2;
-        string Str1, Str2;
-        Str1 = number[i];
-        Str2 = anotherDec.number[i];
-        n2 = stoi(Str1);
-        n1 = stoi(Str2);
-        if(((n1 + n2 + carry)) >= 10){
-            int I1, I2;
-            I1 = (n1 + n2 + carry) % 10;
-            I2 = (n1 + n2 + carry) / 10;
-            vec.push_back(I1);
-            carry =I2;
-
-        }else{
-
-            vec.push_back(n1 + n2 + carry);
-        }
-    }vec.push_back(carry);
-    string result1;
-    reverse(vec.begin(), vec.end());
-    for(int j : vec){
-        result1 += to_string(j);
-    }
-    if(!check_if_all_zeroes(result1)){
-        for (int i = 0; i < result1.size(); ++i) {
-            if(result1[i] == '0'){
-                result1.erase(i, 1);
-                i--;
+    if((sign == 0 && anotherDec.sign == 0) || (sign == 1 && anotherDec.sign == 1)) {
+        int ma, mi;
+        ma = number.size();
+        mi = anotherDec.number.size();
+        if(ma >= mi) {
+            for (int i = 0; i < mi; i++) {
+                int n1, n2;
+                string st1, st2;
+                st1 = number[i];
+                st2 = anotherDec.number[i];
+                n1 = stoi(st1);
+                n2 = stoi(st2);
+                if (((n1 + n2 + carry)) >= 10) {
+                    int I1, I2;
+                    I1 = (n1 + n2 + carry) % 10;
+                    I2 = (n1 + n2 + carry) / 10;
+                    vec.push_back(I1);
+                    carry = I2;
+                } else {
+                    vec.push_back(n1 + n2 + carry);
+                    carry = 0;
+                }
             }
-            else{
-                break;
+            for(int j = mi ; j < ma ; j++){
+                int n1;
+                string st1;
+                st1 = number[j];
+                n1 = stoi(st1);
+                vec.push_back(n1 + carry);
+                carry = 0;
             }
+            if (test == 0 && carry != 0) {
+                vec.push_back(carry);
+            }
+            reverse(vec.begin(), vec.end());
+            cout << carry << " ";
+            string resultOfAddition;
+            reverse(vec.begin(), vec.end());
+            for (int j: vec) {
+                resultOfAddition += to_string(j);
+            }
+            if (AddSub == 2) {
+                resultOfAddition.insert(0, "-");
+            }
+            reverse(resultOfAddition.begin(), resultOfAddition.end());
+            finalResultOfAdd.number = resultOfAddition;
+            return finalResultOfAdd;
         }
+        if(ma < mi) {
+            for (int i = 0; i < ma; i++) {
+                int n1, n2;
+                string st1, st2;
+                st1 = number[i];
+                st2 = anotherDec.number[i];
+                n1 = stoi(st1);
+                n2 = stoi(st2);
+                if (((n1 + n2 + carry)) >= 10) {
+                    int I1, I2;
+                    I1 = (n1 + n2 + carry) % 10;
+                    I2 = (n1 + n2 + carry) / 10;
+                    vec.push_back(I1);
+                    carry = I2;
+                } else {
+                    vec.push_back(n1 + n2 + carry);
+                    carry = 0;
+                }
+            }
+            for(int j = ma ; j < mi ; j++){
+                int n1;
+                string st1;
+                st1 = anotherDec.number[j];
+                n1 = stoi(st1);
+                vec.push_back(n1 + carry);
+                carry = 0;
+            }
+            if (test == 0 && carry != 0) {
+                vec.push_back(carry);
+            }
+            reverse(vec.begin(), vec.end());
+            string resultOfAddition;
+            reverse(vec.begin(), vec.end());
+            for (int j: vec) {
+                resultOfAddition += to_string(j);
+            }
+            if (AddSub == 2) {
+                resultOfAddition.insert(0, "-");
+            }
+            reverse(resultOfAddition.begin(), resultOfAddition.end());
+            finalResultOfAdd.number = resultOfAddition;
+            return finalResultOfAdd;
+        }
+
+    }else{
+        BigDecimalInt num1(number);
+        BigDecimalInt num2(anotherDec.number);
+        finalResultOfAdd = num1 - num2;
+        return finalResultOfAdd;
     }
-    else{
-        result1 = "0";
-    }
-    result.number = result1;
-    return result;
 }
+
 bool BigDecimalInt::operator<(BigDecimalInt anotherDec) {
     if (number[0] == '-' || anotherDec.number[0] == '-') {
         if (number[0] == '-' && anotherDec.number[0] != '-') {
