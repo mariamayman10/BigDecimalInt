@@ -10,6 +10,7 @@ using namespace std;
 static int AddSub;
 bool check_if_all_zeroes(const string& string1);
 int menu_system();
+int options(int choice);
 class BigDecimalInt{
 private:
     string number;
