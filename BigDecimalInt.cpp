@@ -676,3 +676,97 @@ int menu_system(){
     choice_int = stoi(choice);
     return choice_int;
 }
+int options(int choice){
+    string str1, str2;
+    if(choice == 1){
+        cout << "Enter the first number: ";
+        cin >> str1;
+        cout << "\nEnter the second number: ";
+        cin >> str2;
+        BigDecimalInt n1 = BigDecimalInt(str1);
+        BigDecimalInt n2 = BigDecimalInt(str2);
+        cout << "\nThe result of subtraction is " << n1 - n2 << "\n\n";
+    }
+    else if(choice == 2){
+        cout << "Enter the first number: ";
+        cin >> str1;
+        cout << "\nEnter the second number: ";
+        cin >> str2;
+        BigDecimalInt n1 = BigDecimalInt(str1);
+        BigDecimalInt n2 = BigDecimalInt(str2);
+        cout << "\nThe result of addition is " << n1 + n2 << "\n";
+    }
+    else if(choice == 3){
+        bool ans;
+        cout << "Enter the first number: ";
+        cin >> str1;
+        cout << "\nEnter the second number: ";
+        cin >> str2;
+        BigDecimalInt n1 = BigDecimalInt(str1);
+        BigDecimalInt n2 = BigDecimalInt(str2);
+        ans = n1 > n2;
+        if(ans)cout << "\nThe first number is greater than the second number\n\n";
+        else cout << "\nThe first number isn't greater than the second number\n\n";
+    }
+    else if(choice == 4){
+        bool ans;
+        cout << "Enter the first number: ";
+        cin >> str1;
+        cout << "\nEnter the second number: ";
+        cin >> str2;
+        BigDecimalInt n1 = BigDecimalInt(str1);
+        BigDecimalInt n2 = BigDecimalInt(str2);
+        ans = n1 < n2;
+        if(ans)cout << "\nThe second number is greater than the first number\n\n";
+        else cout << "\nThe second number isn't greater than the first number\n\n";
+    }
+    else if(choice == 5){
+        bool ans;
+        cout << "Enter the first number: ";
+        cin >> str1;
+        cout << "\nEnter the second number: ";
+        cin >> str2;
+        BigDecimalInt n1 = BigDecimalInt(str1);
+        BigDecimalInt n2 = BigDecimalInt(str2);
+        ans = n1 == n2;
+        if(ans)cout << "\nThe numbers are equal\n\n";
+        else cout << "\nThe numbers aren't equal\n\n";
+    }
+    else if(choice == 6){
+        cout << "Enter a number: ";
+        cin >> str1;
+        BigDecimalInt n1 = BigDecimalInt(str1), n2;
+        cout << "\nBefore assigning value in the variable n2 it equals to " << n2 << '\n';
+        n2 = n1;
+        cout << "After assigning value in the variable n2 it equals to " << n2 << '\n';
+    }
+    else if(choice == 7){
+        cout << "Enter a number: ";
+        cin >> str1;
+        BigDecimalInt n1 = BigDecimalInt(str1);
+        cout << "\nThe size of the number equals to = " << n1.Size() << "\n\n";
+    }
+    else if(choice == 8){
+        cout << "Enter a number: ";
+        cin >> str1;
+        BigDecimalInt n1 = BigDecimalInt(str1);
+        int s = n1.Sign();
+        if(s == 1){
+            cout << "\nThe number is positive" << "\n\n";
+        }
+        else{
+            cout << "\nThe number is negative" << "\n\n";
+        }
+    }
+    else if(choice == 9){
+        cout << "Enter a number: ";
+        cin >> str1;
+        BigDecimalInt n1 = BigDecimalInt(str1);
+        if(n1.Sign() == 0){
+            cout << "\nThe number equals to = -" << n1.Number() << "\n\n";
+        }
+        else{
+            cout << "\nThe number equals to = " << n1.Number() << "\n\n";
+        }
+    }
+}
